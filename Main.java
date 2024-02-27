@@ -1,25 +1,24 @@
-import logics.FileHandler;
-import sources.Texts;
+import exceptions.InvalidFileException;
+import handlers.CommandHandler;
+import handlers.FileHandler;
+import models.Organization;
+import validators.*;
 
-import java.util.Scanner;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Stack;
 
 public class Main {
-    public static void main(String[] args) {
-        System.out.println(Texts.HELLO_TEXT);
-        String FINAL_NAME;
+    public static void main(String[] args) throws InvalidFileException {
+        String[] arg = {"DATA.csv"};
+        FileHandler fileInputHandler = new FileHandler(arg);
+        Stack<Organization> collection = fileInputHandler.readFile();
+
+        System.out.println("Welcome to the LABA 5 program. Type command down below. To see all commands type help");
+        CommandHandler commandHandler = new CommandHandler();
+        commandHandler.start();
 
 
-        try {
-            FINAL_NAME = args[0];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            Scanner scanner = new Scanner(System.in);
-            do {
-                System.out.println();
-                System.out.print(Texts.NO_FILE_TEXT);
-                FINAL_NAME = scanner.next();
-            } while (!FileHandler.checkFile(FINAL_NAME));
-
-        }
 
 
     }
