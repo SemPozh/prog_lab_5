@@ -5,12 +5,13 @@ import models.Organization;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Scanner;
 import java.util.Stack;
 
 public class FileHandler {
     private String fileName;
-    private Stack<Organization> fileContent;
+    private Collection<Organization> fileContent;
 
     public FileHandler(String[] args){
         try{
@@ -22,7 +23,7 @@ public class FileHandler {
         }
     }
 
-    public Stack<Organization> readFile() {
+    public Collection<Organization> readFile() {
         File file = new File(this.fileName);
         try {
             Scanner scanner = new Scanner(file);

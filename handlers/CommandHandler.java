@@ -2,6 +2,8 @@ package handlers;
 
 import commands.Command;
 import commands.Help;
+import commands.Info;
+import commands.Show;
 import exceptions.InvalidCommandArgumentsException;
 
 import java.util.Arrays;
@@ -12,10 +14,23 @@ public class CommandHandler {
     HashMap<String, Command> commandsMap;
     private boolean isWorking;
 
-    public CommandHandler(){
+    private CollectionHandler collectionHandler;
+
+    public CommandHandler(CollectionHandler collectionHandler){
         setWorking(true);
+        setCollectionHandler(collectionHandler);
         commandsMap = new HashMap<>();
         commandsMap.put("help", new Help("help", 0, true));
+        commandsMap.put("info", new Info("info", 0, true));
+        commandsMap.put("show", new Show("show", 0, true));
+    }
+
+    public CollectionHandler getCollectionHandler() {
+        return collectionHandler;
+    }
+
+    public void setCollectionHandler(CollectionHandler collectionHandler){
+        this.collectionHandler = collectionHandler;
     }
 
     public void setWorking(boolean isWorking){
@@ -34,12 +49,7 @@ public class CommandHandler {
 
     private String[] getCommandArguments(String commandText){
         String[] commandArr = commandText.split(" ");
-        String[] result = Arrays.copyOfRange(commandArr, 1, commandArr.length);
-        System.out.println(result.length);
-        for (String el:result){
-            System.out.println(el);
-        }
-        return result;
+        return Arrays.copyOfRange(commandArr, 1, commandArr.length);
     }
 
     private Command getCommandObject(String commandName){
@@ -50,13 +60,14 @@ public class CommandHandler {
         Scanner scanner = new Scanner(System.in);
         while (isWorking){
             System.out.print("\t> ");
-            String commandText = scanner.next();
+            String commandText = scanner.nextLine();
             Command commandObject = getCommandObject(getCommandName(commandText));
             try {
-                commandObject.execute(getCommandArguments(commandText));
+                commandObject.execute(collectionHandler, getCommandArguments(commandText));
             } catch (InvalidCommandArgumentsException e){
                 System.out.println(e.getMessage());
-                System.exit(0);
+            } catch (NullPointerException e){
+                System.out.println("There is no such command. The list of commands can be viewed by calling the help command");
             }
         }
         scanner.close();

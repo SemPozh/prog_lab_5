@@ -91,4 +91,41 @@ public class Organization {
     private ZonedDateTime generateDateTime(){
         return ZonedDateTime.now();
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public ZonedDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public Integer getAnnualTurnover() {
+        return annualTurnover;
+    }
+
+    public Integer getEmployeesCount() {
+        return employeesCount;
+    }
+
+    public OrganizationType getType() {
+        return type;
+    }
+
+    public Address getOfficialAddress() {
+        return officialAddress;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: "+ getId() + ", NAME: " + getName() + ", COORDINATES: (" + getCoordinates().getX() + "; " + getCoordinates().getY() + ")";
+    }
 }

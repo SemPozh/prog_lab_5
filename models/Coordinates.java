@@ -27,4 +27,12 @@ public class Coordinates {
     private boolean validateY(double y){
         return y <= 518;
     }
+
+    public Integer getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
 }

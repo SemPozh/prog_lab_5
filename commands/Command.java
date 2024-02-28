@@ -1,11 +1,13 @@
 package commands;
 
 import exceptions.InvalidCommandArgumentsException;
+import handlers.CollectionHandler;
 
 public abstract class Command {
     private int argumentsCount;
     private boolean isInlineArgument;
     private final String name;
+
 
     public Command(String name, int argumentsCount, boolean isInlineArgument){
         this.name = name;
@@ -30,5 +32,5 @@ public abstract class Command {
     }
 
 
-    public abstract void execute(String[] arguments) throws InvalidCommandArgumentsException;
+    public abstract void execute(CollectionHandler collectionHandler, String[] arguments) throws InvalidCommandArgumentsException;
 }
