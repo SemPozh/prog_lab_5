@@ -1,5 +1,7 @@
 package models;
 
+import exceptions.InvalidObjectFieldException;
+
 import java.time.ZonedDateTime;
 
 public class Organization {
@@ -16,8 +18,12 @@ public class Organization {
         this.id = generateID();
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String name) throws InvalidObjectFieldException {
+        if (!name.isEmpty()){
+            this.name = name;
+        } else {
+            throw new InvalidObjectFieldException("Organization name can't be empty");
+        }
     }
 
     public void setCoordinates(Coordinates coordinates) {
@@ -28,12 +34,21 @@ public class Organization {
         this.creationDate = generateDateTime();
     }
 
-    public void setAnnualTurnover(Integer annualTurnover) {
-        this.annualTurnover = annualTurnover;
+    public void setAnnualTurnover(Integer annualTurnover) throws InvalidObjectFieldException {
+        if (annualTurnover > 0){
+            this.annualTurnover = annualTurnover;
+        } else {
+            throw new InvalidObjectFieldException("Field annual turnover must be positive");
+        }
     }
 
-    public void setEmployeesCount(Integer employeesCount) {
-        this.employeesCount = employeesCount;
+    public void setEmployeesCount(Integer employeesCount) throws InvalidObjectFieldException {
+        if (employeesCount > 0){
+            this.employeesCount = employeesCount;
+        } else {
+            throw new InvalidObjectFieldException("Field employees count must be positive");
+        }
+
     }
 
     public void setType(OrganizationType type) {
@@ -44,7 +59,7 @@ public class Organization {
         this.officialAddress = officialAddress;
     }
 
-    public Organization(String name, Coordinates coordinates, Integer annualTurnover, Integer employeesCount, OrganizationType organizationType, Address officialAddress){
+    public Organization(String name, Coordinates coordinates, Integer annualTurnover, Integer employeesCount, OrganizationType organizationType, Address officialAddress) throws InvalidObjectFieldException {
         setId();
         setCreationDate();
         setName(name);
@@ -55,7 +70,7 @@ public class Organization {
         setOfficialAddress(officialAddress);
     }
 
-    public Organization(String name, Coordinates coordinates, Integer employeesCount, OrganizationType organizationType, Address officialAddress){
+    public Organization(String name, Coordinates coordinates, Integer employeesCount, OrganizationType organizationType, Address officialAddress) throws InvalidObjectFieldException {
         setId();
         setCreationDate();
         setName(name);
@@ -65,7 +80,7 @@ public class Organization {
         setOfficialAddress(officialAddress);
     }
 
-    public Organization(String name, Coordinates coordinates, Integer annualTurnover, Integer employeesCount, OrganizationType organizationType){
+    public Organization(String name, Coordinates coordinates, Integer annualTurnover, Integer employeesCount, OrganizationType organizationType) throws InvalidObjectFieldException {
         setId();
         setCreationDate();
         setName(name);
@@ -75,7 +90,7 @@ public class Organization {
         setType(organizationType);
     }
 
-    public Organization(String name, Coordinates coordinates, Integer employeesCount, OrganizationType organizationType) {
+    public Organization(String name, Coordinates coordinates, Integer employeesCount, OrganizationType organizationType) throws InvalidObjectFieldException {
         setId();
         setCreationDate();
         setName(name);

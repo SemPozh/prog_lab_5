@@ -1,13 +1,12 @@
 package handlers;
 
-import commands.Command;
-import commands.Help;
-import commands.Info;
-import commands.Show;
+import commands.*;
 import exceptions.InvalidCommandArgumentsException;
+import exceptions.InvalidObjectFieldException;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class CommandHandler {
@@ -23,6 +22,8 @@ public class CommandHandler {
         commandsMap.put("help", new Help("help", 0, true));
         commandsMap.put("info", new Info("info", 0, true));
         commandsMap.put("show", new Show("show", 0, true));
+        commandsMap.put("add", new Add("add", 0, false));
+        commandsMap.put("update", new Update("update", 1, false));
     }
 
     public CollectionHandler getCollectionHandler() {
@@ -64,7 +65,7 @@ public class CommandHandler {
             Command commandObject = getCommandObject(getCommandName(commandText));
             try {
                 commandObject.execute(collectionHandler, getCommandArguments(commandText));
-            } catch (InvalidCommandArgumentsException e){
+            } catch (InvalidCommandArgumentsException | InvalidObjectFieldException | NoSuchElementException e){
                 System.out.println(e.getMessage());
             } catch (NullPointerException e){
                 System.out.println("There is no such command. The list of commands can be viewed by calling the help command");

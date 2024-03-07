@@ -1,11 +1,12 @@
 package commands;
 
 import exceptions.InvalidCommandArgumentsException;
+import exceptions.InvalidObjectFieldException;
 import handlers.CollectionHandler;
 
 public abstract class Command {
-    private int argumentsCount;
-    private boolean isInlineArgument;
+    private final int argumentsCount;
+    private final boolean isInlineArgument;
     private final String name;
 
 
@@ -28,9 +29,9 @@ public abstract class Command {
     }
 
     protected boolean checkArgumentsCount(String[] arguments){
-        return arguments.length == getArgumentsCount();
+        return getArgumentsCount() == arguments.length;
     }
 
 
-    public abstract void execute(CollectionHandler collectionHandler, String[] arguments) throws InvalidCommandArgumentsException;
+    public abstract void execute(CollectionHandler collectionHandler, String[] arguments) throws InvalidCommandArgumentsException, InvalidObjectFieldException;
 }

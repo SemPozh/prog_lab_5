@@ -1,9 +1,17 @@
 package models;
 
 public enum OrganizationType {
-    COMMERCIAL,
-    PUBLIC,
-    GOVERNMENT,
-    TRUST,
-    OPEN_JOINT_STOCK_COMPANY;
+    COMMERCIAL("Commercial"),
+    PUBLIC("Public"),
+    GOVERNMENT("Government"),
+    TRUST("Trust"),
+    OPEN_JOINT_STOCK_COMPANY("OJSC");
+
+    private final String name;
+
+    OrganizationType(String name){
+        this.name = name;
+    }
+
+
 }

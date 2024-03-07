@@ -1,6 +1,7 @@
 package handlers;
 
 import exceptions.InvalidFileException;
+import exceptions.InvalidObjectFieldException;
 import models.Address;
 import models.Coordinates;
 import models.Organization;
@@ -26,7 +27,7 @@ public class ObjectsHandler {
         this.dataRow = dataRow;
     }
 
-    public Organization createObjectFromFileRow() throws InvalidFileException {
+    public Organization createObjectFromFileRow() throws InvalidFileException, InvalidObjectFieldException {
         DataValidator dataValidator = new DataValidator(dataStructureHashMap);
         dataValidator.validateRow(dataRow);
         Coordinates coordinates = new Coordinates(dataValidator.x, dataValidator.y);

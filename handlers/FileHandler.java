@@ -1,10 +1,10 @@
 package handlers;
 import exceptions.InvalidFileException;
+import exceptions.InvalidObjectFieldException;
 import models.Organization;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Scanner;
 import java.util.Stack;
@@ -36,7 +36,7 @@ public class FileHandler {
         } catch (FileNotFoundException e) {
             System.out.println("File not found. Check your data and try again");
             System.exit(0);
-        } catch (InvalidFileException e){
+        } catch (InvalidFileException | InvalidObjectFieldException e){
             System.out.println(e.getMessage());
             System.exit(0);
         }

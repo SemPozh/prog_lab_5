@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Stack;
 
 public class Main {
-    public static void main(String[] args) throws InvalidFileException {
+    public static void main(String[] args) {
         String[] arg = {"DATA.csv"};
         FileHandler fileInputHandler = new FileHandler(arg);
         CollectionHandler collectionHandler = new CollectionHandler(new Stack<Organization>());
@@ -21,9 +21,5 @@ public class Main {
         System.out.println("Welcome to the LABA 5 program. Type command down below. To see all commands type help");
         CommandHandler commandHandler = new CommandHandler(collectionHandler);
         commandHandler.start();
-
-
-
-
     }
 }

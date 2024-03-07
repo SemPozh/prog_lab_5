@@ -4,6 +4,7 @@ import models.Organization;
 
 import java.time.ZonedDateTime;
 import java.util.Collection;
+import java.util.NoSuchElementException;
 
 public class CollectionHandler {
     private Collection<Organization> collection;
@@ -32,5 +33,16 @@ public class CollectionHandler {
         this.collection.addAll(collection);
     }
 
+    public void addElement(Organization el){
+        collection.add(el);
+    }
 
+    public Organization getElementById(int id){
+        for (Organization org: collection){
+            if (org.getId() == id){
+                return org;
+            }
+        }
+        throw new NoSuchElementException("There are no organization with this ID");
+    }
 }
