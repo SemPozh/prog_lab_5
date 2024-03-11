@@ -3,8 +3,9 @@ package models;
 import exceptions.InvalidObjectFieldException;
 
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
-public class Organization {
+public class Organization implements Comparable {
     private Integer id;
     private String name;
     private Coordinates coordinates;
@@ -12,10 +13,14 @@ public class Organization {
     private Integer annualTurnover;
     private Integer employeesCount;
     private OrganizationType type;
-    private Address officialAddress;
+    private Address officialAddress = null;
 
     public void setId() {
         this.id = generateID();
+    }
+
+    public void setId(Integer id){
+        this.id = id;
     }
 
     public void setName(String name) throws InvalidObjectFieldException {
@@ -32,6 +37,10 @@ public class Organization {
 
     public void setCreationDate() {
         this.creationDate = generateDateTime();
+    }
+
+    public void setCreationDate(ZonedDateTime creationDate){
+        this.creationDate = creationDate;
     }
 
     public void setAnnualTurnover(Integer annualTurnover) throws InvalidObjectFieldException {
@@ -99,6 +108,48 @@ public class Organization {
         setType(organizationType);
     }
 
+    public Organization(Integer id, String name, Coordinates coordinates, ZonedDateTime creationDate, Integer annualTurnover, Integer employeesCount, OrganizationType organizationType, Address officialAddress) throws InvalidObjectFieldException {
+        setId(id);
+        setCreationDate(creationDate);
+        setName(name);
+        setCoordinates(coordinates);
+        setAnnualTurnover(annualTurnover);
+        setEmployeesCount(employeesCount);
+        setType(organizationType);
+        setOfficialAddress(officialAddress);
+    }
+
+    public Organization(Integer id, String name, Coordinates coordinates, ZonedDateTime creationDate, Integer employeesCount, OrganizationType organizationType, Address officialAddress) throws InvalidObjectFieldException {
+        setId(id);
+        setCreationDate(creationDate);
+        setName(name);
+        setCoordinates(coordinates);
+        setEmployeesCount(employeesCount);
+        setType(organizationType);
+        setOfficialAddress(officialAddress);
+    }
+
+    public Organization(Integer id, String name, Coordinates coordinates, ZonedDateTime creationDate, Integer annualTurnover, Integer employeesCount, OrganizationType organizationType) throws InvalidObjectFieldException {
+        setId(id);
+        setCreationDate(creationDate);
+        setName(name);
+        setCoordinates(coordinates);
+        setAnnualTurnover(annualTurnover);
+        setEmployeesCount(employeesCount);
+        setType(organizationType);
+    }
+
+    public Organization(Integer id, String name, Coordinates coordinates, ZonedDateTime creationDate, Integer employeesCount, OrganizationType organizationType) throws InvalidObjectFieldException {
+        setId(id);
+        setCreationDate(creationDate);
+        setName(name);
+        setCoordinates(coordinates);
+        setEmployeesCount(employeesCount);
+        setType(organizationType);
+    }
+
+
+
     private Integer generateID(){
         return Math.abs(generateDateTime().hashCode() * 150 - 500);
     }
@@ -141,6 +192,17 @@ public class Organization {
 
     @Override
     public String toString() {
-        return "ID: "+ getId() + ", NAME: " + getName() + ", COORDINATES: (" + getCoordinates().getX() + "; " + getCoordinates().getY() + ")";
+        return "ID: "+ getId() + ", NAME: " + getName() + ", COORDINATES: (" + getCoordinates().getX() + "; " + getCoordinates().getY() + ")" + ", CREATION DATE: " + getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+    }
+
+
+    @Override
+    public int compareTo(Object o) {
+        try {
+            Coordinates ITMO = new Coordinates(60,30.310029);
+            return (int) (Math.round(Math.sqrt(Math.pow(ITMO.getX() - getCoordinates().getX(), 2) + Math.pow(ITMO.getY() - getCoordinates().getY(), 2))) - (Math.sqrt(Math.pow(ITMO.getX() - ((Organization) o).getCoordinates().getX(), 2) + Math.pow(ITMO.getY() - ((Organization) o).getCoordinates().getY(), 2))));
+        } catch (InvalidObjectFieldException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

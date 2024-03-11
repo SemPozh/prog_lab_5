@@ -16,7 +16,7 @@ public class IntegerValidator extends FieldValidator<Integer> {
             if (isNotNull()){
                 throw new InvalidFileException("Incorrect data in the file! The program cannot be executed!");
             } else {
-                return null;
+                return 0;
             }
         }
 

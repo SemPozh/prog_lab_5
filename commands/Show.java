@@ -15,9 +15,14 @@ public class Show extends Command{
     public void execute(CollectionHandler collectionHandler, String[] arguments) throws InvalidCommandArgumentsException {
         if (checkArgumentsCount(arguments)){
             Collection<Organization> collection = collectionHandler.getCollection();
-            for (Organization el: collection){
-                System.out.println(el.toString());
+            if (!collection.isEmpty()){
+                for (Organization el: collection){
+                    System.out.println(el.toString());
+                }
+            } else {
+                System.out.println("Collection is empty");
             }
+
 
         } else {
             throw new InvalidCommandArgumentsException("Invalid number of arguments. Expected: " + getArgumentsCount() + ", given: " + arguments.length);

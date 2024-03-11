@@ -13,9 +13,9 @@ import java.util.Stack;
 public class Main {
     public static void main(String[] args) {
         String[] arg = {"DATA.csv"};
-        FileHandler fileInputHandler = new FileHandler(arg);
-        CollectionHandler collectionHandler = new CollectionHandler(new Stack<Organization>());
-        collectionHandler.addElements(fileInputHandler.readFile());
+        FileHandler fileHandler = new FileHandler(arg);
+        CollectionHandler collectionHandler = new CollectionHandler(new Stack<Organization>(), fileHandler);
+        collectionHandler.addElements(fileHandler.readFile());
 
 
         System.out.println("Welcome to the LABA 5 program. Type command down below. To see all commands type help");

@@ -15,7 +15,7 @@ public class DoubleValidator extends FieldValidator<Double> {
             if (isNotNull()){
                 throw new InvalidFileException("Incorrect data in the file! The program cannot be executed!");
             } else {
-                return null;
+                return 0.0;
             }
         }
 
@@ -31,7 +31,6 @@ public class DoubleValidator extends FieldValidator<Double> {
         if (Double.parseDouble(value) > getMaxValue()){
             throw new InvalidFileException("The values in the file are too large! The program cannot be executed!");
         }
-
         return Double.parseDouble(value);
     }
 }
