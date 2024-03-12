@@ -65,7 +65,7 @@ public class FileHandler {
                 fileStr += ",";
                 fileStr += element.getCreationDate().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
                 fileStr += ",";
-                if (element.getAnnualTurnover() != 0){
+                if (element.getAnnualTurnover() != null){
                     fileStr += element.getAnnualTurnover();
                 }
                 fileStr += ",";
@@ -78,7 +78,6 @@ public class FileHandler {
                 }
                 fileStr += "\n";
             }
-            System.out.println(fileStr);
             byte[] buffer = fileStr.getBytes();
             bos.write(buffer);
             bos.close();

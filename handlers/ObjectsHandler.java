@@ -17,7 +17,7 @@ public class ObjectsHandler {
         dataStructureHashMap.put(0, new IntegerValidator(true, Integer.MAX_VALUE, Integer.MIN_VALUE));
         dataStructureHashMap.put(1, new StringValidator(true, false));
         dataStructureHashMap.put(2, new IntegerValidator(true, Integer.MAX_VALUE, -392));
-        dataStructureHashMap.put(3, new DoubleValidator(false, 518, Integer.MIN_VALUE));
+        dataStructureHashMap.put(3, new DoubleValidator(true, 518, Integer.MIN_VALUE));
         dataStructureHashMap.put(4, new ZonedDateTimeValidator(true));
         dataStructureHashMap.put(5, new IntegerValidator(false, Integer.MAX_VALUE, 1));
         dataStructureHashMap.put(6, new IntegerValidator(true, Integer.MAX_VALUE, 1));
@@ -39,13 +39,14 @@ public class ObjectsHandler {
         } else {
             address = new Address(dataValidator.zipCode);
         }
-
-//        if (dataValidator.annualTurnover==0){
-//            Organization organization = new Organization(dataValidator.id, dataValidator.name, coordinates, dataValidator.creationDate, dataValidator.employeesCount, dataValidator.organizationType, address);
-//        } else {
-//            Organization organization = new Organization(dataValidator.id, dataValidator.name, coordinates, dataValidator.creationDate, dataValidator.annualTurnover, dataValidator.employeesCount, dataValidator.organizationType, address);
-//        }
-        Organization organization = new Organization(dataValidator.id, dataValidator.name, coordinates, dataValidator.creationDate, dataValidator.annualTurnover, dataValidator.employeesCount, dataValidator.organizationType, address);
+        
+        Organization organization;
+        
+        if (dataValidator.annualTurnover==0){
+            organization = new Organization(dataValidator.id, dataValidator.name, coordinates, dataValidator.creationDate, dataValidator.employeesCount, dataValidator.organizationType, address);
+        } else {
+            organization = new Organization(dataValidator.id, dataValidator.name, coordinates, dataValidator.creationDate, dataValidator.annualTurnover, dataValidator.employeesCount, dataValidator.organizationType, address);
+        }
         return organization;
     }
 }

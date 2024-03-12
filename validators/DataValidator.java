@@ -31,7 +31,6 @@ public class DataValidator {
             Field[] fields = DataValidator.class.getFields();
 
             for (int i = 0; i < 9; i++) {
-//                System.out.println(row[i]);
                 fields[i].setAccessible(true);
                 fields[i].set(this, (dataStructure.get(i).validate(row[i])));
             }

@@ -11,7 +11,7 @@ public class DoubleValidator extends FieldValidator<Double> {
 
     @Override
     Double validate(String value) throws InvalidFileException {
-        if (value.equals("")) {
+        if (value.isEmpty()) {
             if (isNotNull()){
                 throw new InvalidFileException("Incorrect data in the file! The program cannot be executed!");
             } else {

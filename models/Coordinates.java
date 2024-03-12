@@ -4,7 +4,7 @@ import exceptions.InvalidObjectFieldException;
 
 public class Coordinates {
     private Integer x;
-    private double y = 0.0;
+    private double y;
 
     public Coordinates(Integer x, double y) throws InvalidObjectFieldException {
         this.setX(x);
