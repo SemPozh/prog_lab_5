@@ -11,8 +11,13 @@ import java.util.Comparator;
 import java.util.Stack;
 
 public class PrintAnnualTurnovers extends Command{
-    public PrintAnnualTurnovers(String name, int argumentsCount, boolean isInlineArgument) {
-        super(name, argumentsCount, isInlineArgument);
+    public PrintAnnualTurnovers(String name, int argumentsCount, boolean isInlineArgument, int notInlineArgumentsCount) {
+        super(name, argumentsCount, isInlineArgument, notInlineArgumentsCount);
+    }
+
+    @Override
+    public void execute(CollectionHandler collectionHandler, String[] arguments, String notInlineArguments) throws InvalidCommandArgumentsException, InvalidObjectFieldException {
+
     }
 
     @Override

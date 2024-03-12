@@ -1,6 +1,7 @@
 package commands;
 
 import exceptions.InvalidCommandArgumentsException;
+import exceptions.InvalidFileException;
 import exceptions.InvalidObjectFieldException;
 import handlers.CollectionHandler;
 import models.Address;
@@ -12,8 +13,73 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class InsertAt extends Command{
-    public InsertAt(String name, int argumentsCount, boolean isInlineArgument) {
-        super(name, argumentsCount, isInlineArgument);
+    public InsertAt(String name, int argumentsCount, boolean isInlineArgument, int notInlineArgumentsCount) {
+        super(name, argumentsCount, isInlineArgument, notInlineArgumentsCount);
+    }
+
+    @Override
+    public void execute(CollectionHandler collectionHandler, String[] arguments, String notInlineArguments) throws InvalidCommandArgumentsException, InvalidObjectFieldException, InvalidFileException {
+        if (checkArgumentsCount(arguments)){
+            try {
+                int index = Integer.parseInt(arguments[0]);
+                String[] notInlineArgumentsArray = notInlineArguments.split("\n");
+                Coordinates coordinates;
+                String name = notInlineArgumentsArray[0];
+                Integer annualTurnover = null;
+                Integer employeeCount;
+                String zipCode = null;
+                OrganizationType organizationType = null;
+                if (notInlineArgumentsArray.length == 7){
+                    zipCode = notInlineArgumentsArray[6];
+                }
+                try {
+                    Integer x = Integer.parseInt(notInlineArgumentsArray[1]);
+                    coordinates = new Coordinates(x);
+                } catch (NumberFormatException e) {
+                    throw new InvalidFileException("Invalid script data! X-coordinate must be a number!");
+                }
+
+                try {
+                    double y = Double.parseDouble(notInlineArgumentsArray[2]);
+                    coordinates.setY(y);
+                } catch (NumberFormatException e) {
+                    throw new InvalidFileException("Invalid script data! Y-coordinate must be a double number!");
+                }
+                if (!notInlineArgumentsArray[3].isEmpty()){
+                    try{
+                        annualTurnover = Integer.parseInt(notInlineArgumentsArray[3]);
+                    } catch (NumberFormatException e){
+                        throw new InvalidFileException("Invalid script data! Annual turnover must be a double number!");
+                    }
+                }
+
+                try{
+                    employeeCount = Integer.parseInt(notInlineArgumentsArray[4]);
+                } catch (NumberFormatException e){
+                    throw new InvalidFileException("Invalid script data! Employees count must be a double number!");
+                }
+
+                try {
+                    organizationType = OrganizationType.valueOf(notInlineArgumentsArray[5].toUpperCase());
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Invalid script data! There are no such organization type");
+                }
+
+                Organization organization = new Organization(name, coordinates, employeeCount, organizationType);
+                if (zipCode!=null){
+
+                    organization.setOfficialAddress(new Address(zipCode));
+                }
+                if (annualTurnover!=null){
+                    organization.setAnnualTurnover(annualTurnover);
+                }
+                collectionHandler.insertAt(organization, index);
+            } catch (NumberFormatException e){
+                throw new InvalidFileException("The script if invalid! Index argument in insert_at_index command must be a number!");
+            }
+        } else {
+            throw new InvalidCommandArgumentsException("Arguments for this command inputs below command name in next lines");
+        }
     }
 
     @Override
@@ -45,7 +111,7 @@ public class InsertAt extends Command{
                     System.out.print("\t\tInput organization Y-coordinate: ");
                     try {
                         String yText = scanner.nextLine();
-                        if (!yText.equals("")) {
+                        if (!yText.isEmpty()) {
                             double y = Double.parseDouble(yText);
                             coordinates.setY(y);
                         }
@@ -59,7 +125,7 @@ public class InsertAt extends Command{
                     System.out.print("\t\tInput organization annual turnover: ");
                     try {
                         String annualTurnoverText = scanner.nextLine();
-                        if (!annualTurnoverText.equals("")) {
+                        if (!annualTurnoverText.isEmpty()) {
                             annualTurnover = Integer.parseInt(annualTurnoverText);
                         }
                         correctInput = true;
@@ -96,7 +162,7 @@ public class InsertAt extends Command{
                 while (!correctInput) {
                     System.out.print("\t\tInput organization zip code: ");
                     String zipCodeText = scanner.nextLine();
-                    if (!zipCodeText.equals("")) {
+                    if (!zipCodeText.isEmpty()) {
                         address = new Address(zipCodeText);
                     }
                     correctInput = true;

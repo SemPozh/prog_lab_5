@@ -6,8 +6,13 @@ import handlers.CollectionHandler;
 import models.Organization;
 
 public class AVGofAnnualTurnover extends Command{
-    public AVGofAnnualTurnover(String name, int argumentsCount, boolean isInlineArgument) {
-        super(name, argumentsCount, isInlineArgument);
+    @Override
+    public void execute(CollectionHandler collectionHandler, String[] arguments, String notInlineArguments) throws InvalidCommandArgumentsException, InvalidObjectFieldException {
+
+    }
+
+    public AVGofAnnualTurnover(String name, int argumentsCount, boolean isInlineArgument, int notInlineArgumentsCount) {
+        super(name, argumentsCount, isInlineArgument, notInlineArgumentsCount);
     }
 
     @Override

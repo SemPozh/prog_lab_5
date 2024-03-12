@@ -1,6 +1,7 @@
 package commands;
 
 import exceptions.InvalidCommandArgumentsException;
+import exceptions.InvalidFileException;
 import exceptions.InvalidObjectFieldException;
 import handlers.CollectionHandler;
 import models.Address;
@@ -12,8 +13,8 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class AddIfMax extends Command{
-    public AddIfMax(String name, int argumentsCount, boolean isInlineArgument) {
-        super(name, argumentsCount, isInlineArgument);
+    public AddIfMax(String name, int argumentsCount, boolean isInlineArgument, int notInlineArgumentsCount) {
+        super(name, argumentsCount, isInlineArgument, notInlineArgumentsCount);
     }
 
     @Override
@@ -116,6 +117,73 @@ public class AddIfMax extends Command{
                 collectionHandler.addElement(organization);
             }
 
+        } else {
+            throw new InvalidCommandArgumentsException("Arguments for this command inputs below command name in next lines");
+        }
+    }
+
+    @Override
+    public void execute(CollectionHandler collectionHandler, String[] arguments, String notInlineArguments) throws InvalidCommandArgumentsException, InvalidObjectFieldException, InvalidFileException {
+        if (checkArgumentsCount(arguments)){
+            String[] notInlineArgumentsArray = notInlineArguments.split("\n");
+            Coordinates coordinates = null;
+            String name = notInlineArgumentsArray[0];
+            Integer annualTurnover = null;
+            Integer employeeCount = null;
+            String zipCode = null;
+            OrganizationType organizationType = null;
+            if (notInlineArgumentsArray.length == 7){
+                zipCode = notInlineArgumentsArray[6];
+            }
+            try {
+                Integer x = Integer.parseInt(notInlineArgumentsArray[1]);
+                coordinates = new Coordinates(x);
+            } catch (NumberFormatException e) {
+                throw new InvalidFileException("Invalid script data! X-coordinate must be a number!");
+            }
+
+            try {
+                double y = Double.parseDouble(notInlineArgumentsArray[2]);
+                coordinates.setY(y);
+            } catch (NumberFormatException e) {
+                throw new InvalidFileException("Invalid script data! Y-coordinate must be a double number!");
+            }
+            if (!notInlineArgumentsArray[3].isEmpty()){
+                try{
+                    annualTurnover = Integer.parseInt(notInlineArgumentsArray[3]);
+                } catch (NumberFormatException e){
+                    throw new InvalidFileException("Invalid script data! Annual turnover must be a double number!");
+                }
+            }
+
+            try{
+                employeeCount = Integer.parseInt(notInlineArgumentsArray[4]);
+            } catch (NumberFormatException e){
+                throw new InvalidFileException("Invalid script data! Employees count must be a double number!");
+            }
+
+            try {
+                organizationType = OrganizationType.valueOf(notInlineArgumentsArray[5].toUpperCase());
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid script data! There are no such organization type");
+            }
+
+            Organization organization = new Organization(name, coordinates, employeeCount, organizationType);
+            if (zipCode!=null){
+
+                organization.setOfficialAddress(new Address(zipCode));
+            }
+            if (annualTurnover!=null){
+                organization.setAnnualTurnover(annualTurnover);
+            }
+            if (collectionHandler.getCollectionSize() != 0){
+                Organization maxOrg = collectionHandler.getMax();
+                if (organization.compareTo(maxOrg) < 0){
+                    collectionHandler.addElement(organization);
+                }
+            } else {
+                collectionHandler.addElement(organization);
+            }
         } else {
             throw new InvalidCommandArgumentsException("Arguments for this command inputs below command name in next lines");
         }

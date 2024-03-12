@@ -5,8 +5,13 @@ import exceptions.InvalidObjectFieldException;
 import handlers.CollectionHandler;
 
 public class Save extends Command{
-    public Save(String name, int argumentsCount, boolean isInlineArgument) {
-        super(name, argumentsCount, isInlineArgument);
+    public Save(String name, int argumentsCount, boolean isInlineArgument, int notInlineArgumentsCount) {
+        super(name, argumentsCount, isInlineArgument, notInlineArgumentsCount);
+    }
+
+    @Override
+    public void execute(CollectionHandler collectionHandler, String[] arguments, String notInlineArguments) throws InvalidCommandArgumentsException, InvalidObjectFieldException {
+
     }
 
     @Override

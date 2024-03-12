@@ -1,6 +1,7 @@
 package commands;
 
 import exceptions.InvalidCommandArgumentsException;
+import exceptions.InvalidFileException;
 import exceptions.InvalidObjectFieldException;
 import handlers.CollectionHandler;
 import models.Address;
@@ -13,8 +14,72 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Update extends Command{
-    public Update(String name, int argumentsCount, boolean isInlineArgument) {
-        super(name, argumentsCount, isInlineArgument);
+    public Update(String name, int argumentsCount, boolean isInlineArgument, int notInlineArgumentsCount) {
+        super(name, argumentsCount, isInlineArgument, notInlineArgumentsCount);
+    }
+
+    @Override
+    public void execute(CollectionHandler collectionHandler, String[] arguments, String notInlineArguments) throws InvalidCommandArgumentsException, InvalidObjectFieldException, InvalidFileException {
+        if (checkArgumentsCount(arguments)){
+            try{
+                Organization element = collectionHandler.getElementById(Integer.parseInt(arguments[0]));
+                String[] notInlineArgumentsArray = notInlineArguments.split("\n");
+                Coordinates coordinates;
+                element.setName(notInlineArgumentsArray[0]);
+                Integer annualTurnover = null;
+                Integer employeeCount;
+                String zipCode = null;
+                OrganizationType organizationType = null;
+                if (notInlineArgumentsArray.length == 7){
+                    zipCode = notInlineArgumentsArray[6];
+                }
+                try {
+                    Integer x = Integer.parseInt(notInlineArgumentsArray[1]);
+                    coordinates = new Coordinates(x);
+                    element.setCoordinates(coordinates);
+                } catch (NumberFormatException e) {
+                    throw new InvalidFileException("Invalid script data! X-coordinate must be a number!");
+                }
+
+                try {
+                    double y = Double.parseDouble(notInlineArgumentsArray[2]);
+                    element.getCoordinates().setY(y);
+                } catch (NumberFormatException e) {
+                    throw new InvalidFileException("Invalid script data! Y-coordinate must be a double number!");
+                }
+                if (!notInlineArgumentsArray[3].isEmpty()){
+                    try{
+                        annualTurnover = Integer.parseInt(notInlineArgumentsArray[3]);
+                        element.setAnnualTurnover(annualTurnover);
+                    } catch (NumberFormatException e){
+                        throw new InvalidFileException("Invalid script data! Annual turnover must be a double number!");
+                    }
+                }
+
+                try{
+                    employeeCount = Integer.parseInt(notInlineArgumentsArray[4]);
+                    element.setEmployeesCount(employeeCount);
+                } catch (NumberFormatException e){
+                    throw new InvalidFileException("Invalid script data! Employees count must be a double number!");
+                }
+
+                try {
+                    organizationType = OrganizationType.valueOf(notInlineArgumentsArray[5].toUpperCase());
+                    element.setType(organizationType);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Invalid script data! There are no such organization type");
+                }
+
+                if (zipCode!=null){
+                    element.setOfficialAddress(new Address(zipCode));
+                }
+            } catch (NumberFormatException e){
+                throw new InvalidCommandArgumentsException("ID must be a number");
+            }
+
+        } else {
+            throw new InvalidCommandArgumentsException("Arguments for this command inputs below command name in next lines");
+        }
     }
 
     @Override
